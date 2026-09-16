@@ -553,21 +553,20 @@ export default function Home() {
           <p className="challenge-disclaimer">Sample projects are prompts for exploration. The final challenge briefs and participation rules will be shared by the Hackfinity organisers.</p>
         </section>
 
-      <section id="venue" className="venue-section section-shell">
-  
-    href="https://www.google.com/maps/search/?api=1&query=..."
-    target="_blank"
-    rel="noopener noreferrer"
-    className="venue-graphic"
-    aria-label="Open St. John's School, Anchal in Google Maps"
-  >
-     >
-       <div className="venue-sun" />
-       <div className="venue-line venue-line-one" />
-       <div className="venue-line venue-line-two" />
-       <div className="venue-pin"><MapPin /></div>
-       <div className="venue-rings"><span /><span /><span /></div>
-     </a>
+           <section id="venue" className="venue-section section-shell">
+          
+            href="https://www.google.com/maps/search/?api=1&query=St.+John%27s+School+Mar+Gregorios+Campus+Anchal+Kollam+Kerala+691306"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="venue-graphic"
+            aria-label="Open St. John's School, Anchal in Google Maps"
+          >
+            <div className="venue-sun" />
+            <div className="venue-line venue-line-one" />
+            <div className="venue-line venue-line-two" />
+            <div className="venue-pin"><MapPin /></div>
+            <div className="venue-rings"><span /><span /><span /></div>
+          </a>
           <div className="venue-content" data-reveal>
             <div className="section-label"><span>05</span> FIND THE GROUND</div>
             <div className="official-host-mark official-host-mark-prominent">
@@ -577,14 +576,14 @@ export default function Home() {
             <p className="eyebrow">THE PLACE WHERE IT BEGINS</p>
             <h2>St. John&apos;s School,<br /><em>Anchal.</em></h2>
             <p>Our home base for a day of new signals, shared energy, and ideas set in motion. Full arrival and event-day information will be announced by the organising team.</p>
-       
-            href="https://www.google.com/maps/search/?api=1&query=St.+John%27s+School+Mar+Gregorios+Campus+Anchal+Kollam+Kerala+691306"
-       target="_blank"
-       rel="noopener noreferrer"
-       className="venue-tag"
-     >
-       <MapPin aria-hidden="true" /> MAR GREGORIOS CAMPUS, ANCHAL
-     </a>
+            
+              href="https://www.google.com/maps/search/?api=1&query=St.+John%27s+School+Mar+Gregorios+Campus+Anchal+Kollam+Kerala+691306"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="venue-tag"
+            >
+              <MapPin aria-hidden="true" /> MAR GREGORIOS CAMPUS, ANCHAL
+            </a>
           </div>
         </section>
 
