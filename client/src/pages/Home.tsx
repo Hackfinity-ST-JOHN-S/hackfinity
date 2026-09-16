@@ -746,16 +746,22 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="site-footer">
-        <div className="footer-mark"><strong>HACK<span>FINITY</span></strong><small>TOOFAN</small></div>
-        <div className="footer-host">
-          <span>HOSTED BY</span>
-          <strong>ST. JOHN&apos;S SCHOOL, ANCHAL</strong>
-        </div>
-          <img src="./assets/hownwhy-logo.png" alt="HowNwhy" className="hownwhy-logo" />
-        </div>
-        <div className="footer-year">OCTOBER 2026</div>
-      </footer>
+    <footer className="site-footer">
+  <div className="footer-mark"><strong>HACK<span>FINITY</span></strong><small>TOOFAN</small></div>
+  <div className="footer-host">
+    <span>HOSTED BY</span>
+    <strong>ST. JOHN&apos;S SCHOOL, ANCHAL</strong>
+  </div>
+  <div className="footer-brand">
+    <img
+      src="./assets/hownwhy-logo.png"
+      alt="Powered by HOW N WHY"
+      className="hownwhy-logo"
+      style={{ height: "56px", width: "auto" }}
+    />
+  </div>
+  <div className="footer-year">OCTOBER 2026</div>
+</footer>
     </div>
   );
 }
