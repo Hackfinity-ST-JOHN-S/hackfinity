@@ -209,7 +209,7 @@ button { cursor: pointer; }
 .team-member-fieldset { margin: .1rem 0; padding: 1.05rem; border: 1px solid rgba(255,213,84,.34); background: rgba(255,213,84,.035); }.team-member-fieldset legend { padding: 0 .25rem; color: #ffd554; font: 600 .57rem/1 var(--font-mono); letter-spacing: .13em; }.team-member-fieldset > p { max-width: 38rem; margin: .35rem 0 1rem; color: rgba(255,248,234,.56); font-size: .72rem; line-height: 1.55; }.team-member-stack { display: grid; gap: .85rem; }.team-member-card { padding: .9rem; border: 1px solid rgba(255,248,234,.16); background: rgba(18,8,10,.24); }.team-member-card-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: .8rem; color: #ffd554; font: 600 .53rem/1 var(--font-mono); letter-spacing: .14em; }.team-member-card-heading i { width: .5rem; height: .5rem; border-radius: 50%; background: #e82630; box-shadow: 0 0 0 4px rgba(232,38,48,.1); }
 @media (max-width: 620px) { .event-countdown { margin-top: 1.5rem; padding: .75rem .8rem; }.event-countdown-units { gap: .35rem; }.event-countdown-unit { padding-right: .35rem; }.event-countdown-unit strong { font-size: 1.15rem; }.event-countdown-unit small { font-size: .42rem; }.team-member-fieldset { padding: .85rem; }.team-member-card { padding: .75rem; } }
 .hownwhy-logo {
-  height: 24px;
+  height: 40px;
   width: auto;
   display: block;
 }
