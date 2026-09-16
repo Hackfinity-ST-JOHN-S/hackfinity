@@ -760,7 +760,6 @@ export default function Home() {
       style={{ height: "56px", width: "auto" }}
     />
   </div>
-  <div className="footer-year">OCTOBER 2026</div>
 </footer>
     </div>
   );
