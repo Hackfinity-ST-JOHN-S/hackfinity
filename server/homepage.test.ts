@@ -16,7 +16,7 @@ describe("TOOFAN homepage", () => {
     expect(page).toContain("more than 60 schools across South India");
     expect(page).toContain("₹10,000 each");
     expect(page).toContain("Artificial Intelligence");
-    expect(page).toContain("09 OCT 2026");
+    expect(page).toContain("31 OCT 2026");
     expect(page).toContain("ST. JOHN&#x27;S SCHOOL, ANCHAL");
     expect(page).toContain("The Storm");
     expect(page).toContain("Experience");
