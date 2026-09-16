@@ -752,8 +752,6 @@ export default function Home() {
           <span>HOSTED BY</span>
           <strong>ST. JOHN&apos;S SCHOOL, ANCHAL</strong>
         </div>
-        <div className="footer-powered">
-          <span>POWERED BY</span>
           <img src="./assets/hownwhy-logo.png" alt="HowNwhy" className="hownwhy-logo" />
         </div>
         <div className="footer-year">OCTOBER 2026</div>
