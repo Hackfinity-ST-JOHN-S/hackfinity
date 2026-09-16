@@ -512,7 +512,6 @@ export default function Home() {
           <div className="toofan-mission-orbit" aria-hidden="true"><span /><span /><span /></div>
           <div className="toofan-mission-heading" data-reveal>
             <div className="section-label"><span>03</span> HACKFINITY 2026 THEME</div>
-            <p className="eyebrow">A 30-DAY INNOVATION CHALLENGE</p>
             <h2>TOOFAN –<br /><em>The Narco Hunt.</em></h2>
           </div>
           <div className="toofan-mission-copy" data-reveal>
