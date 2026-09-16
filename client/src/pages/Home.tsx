@@ -24,7 +24,7 @@ import { matchRegistrationConfirmation } from "@shared/registrationConfirmation"
 import { getRegistrationSubmissionState } from "@shared/registrationSubmission";
 
 const eventDetails = {
-  date: "09 OCT 2026",
+  date: "31 OCT 2026",
   venue: "ST. JOHN'S SCHOOL, ANCHAL",
 };
 
@@ -72,7 +72,7 @@ const registrationEndpoint = "https://script.google.com/macros/s/AKfycbznM1_OyBo
 const registrationConfirmationFrameName = "hackfinity-registration-confirmation";
 const registrationResponseTimeoutMs = 30000;
 const registrationStatusPollIntervalMs = 700;
-const eventCountdownTarget = new Date("2026-10-09T00:00:00+05:30").getTime();
+const eventCountdownTarget = new Date("2026-10-31T00:00:00+05:30").getTime();
 
 function createTeamMember(): TeamMemberInput {
   return { name: "", grade: "", phone: "", email: "" };
@@ -107,7 +107,7 @@ function EventCountdown() {
   ];
 
   return (
-    <div className="event-countdown" role="timer" aria-live="off" aria-label={`Countdown to 9 October 2026: ${countdown.days} days, ${countdown.hours} hours, ${countdown.minutes} minutes, and ${countdown.seconds} seconds remaining`}>
+    <div className="event-countdown" role="timer" aria-live="off" aria-label={`Countdown to 31 October 2026: ${countdown.days} days, ${countdown.hours} hours, ${countdown.minutes} minutes, and ${countdown.seconds} seconds remaining`}>
       <span className="event-countdown-label">COUNTDOWN TO EVENT DAY</span>
       <div className="event-countdown-units">
         {countdownUnits.map((unit) => (
