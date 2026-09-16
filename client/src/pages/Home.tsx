@@ -553,8 +553,8 @@ export default function Home() {
           <p className="challenge-disclaimer">Sample projects are prompts for exploration. The final challenge briefs and participation rules will be shared by the Hackfinity organisers.</p>
         </section>
 
-           <section id="venue" className="venue-section section-shell">
-          
+        <section id="venue" className="venue-section section-shell">
+          <a
             href="https://www.google.com/maps/search/?api=1&query=St.+John%27s+School+Mar+Gregorios+Campus+Anchal+Kollam+Kerala+691306"
             target="_blank"
             rel="noopener noreferrer"
@@ -576,7 +576,7 @@ export default function Home() {
             <p className="eyebrow">THE PLACE WHERE IT BEGINS</p>
             <h2>St. John&apos;s School,<br /><em>Anchal.</em></h2>
             <p>Our home base for a day of new signals, shared energy, and ideas set in motion. Full arrival and event-day information will be announced by the organising team.</p>
-            
+            <a
               href="https://www.google.com/maps/search/?api=1&query=St.+John%27s+School+Mar+Gregorios+Campus+Anchal+Kollam+Kerala+691306"
               target="_blank"
               rel="noopener noreferrer"
