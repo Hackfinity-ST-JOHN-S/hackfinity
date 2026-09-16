@@ -754,7 +754,7 @@ export default function Home() {
         </div>
         <div className="footer-powered">
           <span>POWERED BY</span>
-          <strong className="hownwhy-wordmark" aria-label="HOWNWHY" role="img"><span>HOW</span><i aria-hidden="true">N</i><span>WHY</span></strong>
+          <img src="/assets/hownwhy-logo.png" alt="HowNwhy" className="hownwhy-logo" />
         </div>
         <div className="footer-year">OCTOBER 2026</div>
       </footer>
