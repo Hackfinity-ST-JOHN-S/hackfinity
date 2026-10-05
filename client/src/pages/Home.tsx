@@ -265,6 +265,10 @@ export default function Home() {
     };
   }, []);
 
+  const totalRegisteredTeams = categoryAvailability
+    ? Object.values(categoryAvailability).reduce((total, category) => total + category.registeredTeams, 0)
+    : null;
+
   const closeMenu = () => setMenuOpen(false);
 
   const handleFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -475,7 +479,7 @@ export default function Home() {
           <div className="hero-brief-card" aria-label="Hackfinity 2026 challenge summary">
             <span>2026 FIELD BRIEF</span>
             <strong>4 CHALLENGES</strong>
-            <p>Building safer communities.</p>
+            <p className="live-registration-count" aria-live="polite">LIVE REGISTRATIONS: {totalRegisteredTeams ?? "—"}</p>
           </div>
 
           <div className="hero-meta-panel">
@@ -709,11 +713,6 @@ export default function Home() {
                     return <option key={category} value={category} disabled={isFull}>{category}</option>;
                   })}
                 </select>
-                {categoryAvailability && (
-                  <p className="category-availability" aria-live="polite">
-                    {registrationCategories.map((category) => <span key={category}>{category}: {categoryAvailability[category].registeredTeams} teams</span>)}
-                  </p>
-                )}
                 {fieldErrors.category && <span id="category-error" className="field-error">{fieldErrors.category}</span>}
               </div>
             </div>
