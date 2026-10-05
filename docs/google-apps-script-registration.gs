@@ -7,7 +7,7 @@
 const REGISTRATION_SHEET_NAME = "Registrations";
 const HACKFINITY_CONFIRMATION_URL = "https://hackfinity-st-john-s.github.io/hackfinity/registration-confirmation.html";
 const CONFIRMATION_CACHE_SECONDS = 600;
-const CATEGORY_CAPACITY = 40;
+const CATEGORY_CAPACITY = 10;
 const REGISTRATION_HEADERS = [
   "Registration ID",
   "Submitted On",

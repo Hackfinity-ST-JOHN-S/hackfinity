@@ -72,7 +72,7 @@ const registrationEndpoint = "https://script.google.com/macros/s/AKfycbznM1_OyBo
 const registrationConfirmationFrameName = "hackfinity-registration-confirmation";
 const registrationResponseTimeoutMs = 30000;
 const registrationStatusPollIntervalMs = 700;
-const categoryCapacity = 40;
+const categoryCapacity = 10;
 const eventCountdownTarget = new Date("2026-10-31T00:00:00+05:30").getTime();
 
 function createTeamMember(): TeamMemberInput {
@@ -703,7 +703,7 @@ export default function Home() {
                   {registrationCategories.map((category) => {
                     const remaining = categoryAvailability?.[category] ?? categoryCapacity;
                     const isFull = remaining === 0;
-                    return <option key={category} value={category} disabled={isFull}>{category}{isFull ? " — FULL / UNAVAILABLE" : ""}</option>;
+                    return <option key={category} value={category} disabled={isFull}>{category}</option>;
                   })}
                 </select>
                 {fieldErrors.category && <span id="category-error" className="field-error">{fieldErrors.category}</span>}
