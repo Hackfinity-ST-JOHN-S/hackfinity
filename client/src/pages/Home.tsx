@@ -479,7 +479,7 @@ export default function Home() {
           <div className="hero-brief-card" aria-label="Hackfinity 2026 challenge summary">
             <span>2026 FIELD BRIEF</span>
             <strong>4 CHALLENGES</strong>
-            <p className="live-registration-count" aria-live="polite">LIVE REGISTRATIONS: {totalRegisteredTeams ?? "—"}</p>
+            <p className="live-registration-count" aria-live="polite"><span className="live-registration-dot" aria-hidden="true" />LIVE REGISTRATIONS: {totalRegisteredTeams ?? "—"}</p>
           </div>
 
           <div className="hero-meta-panel">
