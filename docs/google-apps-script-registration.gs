@@ -65,27 +65,21 @@ function doGet(event) {
 
 function getCategoryAvailability() {
   const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(REGISTRATION_SHEET_NAME);
-  const registeredSchools = Object.fromEntries(Array.from(VALID_CATEGORIES, (category) => [category, new Set()]));
+  const registeredTeams = Object.fromEntries(Array.from(VALID_CATEGORIES, (category) => [category, 0]));
   if (!sheet || sheet.getLastRow() < 2) {
-    return Object.fromEntries(Array.from(VALID_CATEGORIES, (category) => [category, { registeredSchools: 0, remaining: CATEGORY_CAPACITY }]));
+    return Object.fromEntries(Array.from(VALID_CATEGORIES, (category) => [category, { registeredTeams: 0, remaining: CATEGORY_CAPACITY }]));
   }
 
   const categoryColumn = REGISTRATION_HEADERS.indexOf("Challenge Category");
-  const schoolColumn = REGISTRATION_HEADERS.indexOf("School / Institution");
   sheet.getRange(2, 1, sheet.getLastRow() - 1, REGISTRATION_HEADERS.length).getValues().forEach((row) => {
     const category = String(row[categoryColumn] || "").trim();
-    const school = normalizeSchool(row[schoolColumn]);
-    if (Object.prototype.hasOwnProperty.call(registeredSchools, category) && school) registeredSchools[category].add(school);
+    if (Object.prototype.hasOwnProperty.call(registeredTeams, category)) registeredTeams[category] += 1;
   });
 
   return Object.fromEntries(Array.from(VALID_CATEGORIES, (category) => {
-    const count = registeredSchools[category].size;
-    return [category, { registeredSchools: count, remaining: Math.max(0, CATEGORY_CAPACITY - count) }];
+    const count = registeredTeams[category];
+    return [category, { registeredTeams: count, remaining: Math.max(0, CATEGORY_CAPACITY - count) }];
   }));
-}
-
-function normalizeSchool(value) {
-  return String(value || "").trim().replace(/\s+/g, " ").toLowerCase();
 }
 
 function doPost(event) {
