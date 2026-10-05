@@ -47,7 +47,7 @@ describe("TOOFAN homepage", () => {
     expect(page).toContain('nav-toofan-logo');
     expect(page).toContain('/assets/toofan-the-narco-hunt-logo.png');
     expect(page).toContain("4 CHALLENGES");
-    expect(page).toContain("40 school slots remaining");
+    expect(page).not.toContain("school slots remaining");
     expect(page).toContain("BRIEF DESCRIPTION OF YOUR PROJECT OR INTEREST");
     expect(page).toContain("COUNTDOWN TO EVENT DAY");
     expect(page).toContain("REGISTRATION SYSTEM: LIVE");

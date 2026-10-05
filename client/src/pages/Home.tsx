@@ -703,7 +703,7 @@ export default function Home() {
                   {registrationCategories.map((category) => {
                     const remaining = categoryAvailability?.[category] ?? categoryCapacity;
                     const isFull = remaining === 0;
-                    return <option key={category} value={category} disabled={isFull}>{category} — {isFull ? "FULL / UNAVAILABLE" : `${remaining} school slots remaining`}</option>;
+                    return <option key={category} value={category} disabled={isFull}>{category}{isFull ? " — FULL / UNAVAILABLE" : ""}</option>;
                   })}
                 </select>
                 {fieldErrors.category && <span id="category-error" className="field-error">{fieldErrors.category}</span>}
