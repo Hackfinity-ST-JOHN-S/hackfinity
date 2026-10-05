@@ -211,7 +211,7 @@ export default function Home() {
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<keyof RegistrationInput, string>>>({});
   const [submitState, setSubmitState] = useState<"idle" | "submitting" | "submitted" | "rejected" | "unavailable">("idle");
   const [honeypot, setHoneypot] = useState("");
-  const [categoryAvailability, setCategoryAvailability] = useState<Record<string, number> | null>(null);
+  const [categoryAvailability, setCategoryAvailability] = useState<Record<string, { registeredTeams: number; remaining: number }> | null>(null);
 
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -241,15 +241,18 @@ export default function Home() {
 
     fetch(`${registrationEndpoint}?availability=1`, { cache: "no-store" })
       .then((response) => response.ok ? response.json() : Promise.reject(new Error("Availability is unavailable.")))
-      .then((data: { categories?: Record<string, { remaining?: number }> }) => {
+      .then((data: { categories?: Record<string, { registeredTeams?: number; remaining?: number }> }) => {
         if (!active || !data.categories) return;
-        const remainingByCategory = Object.fromEntries(
-          registrationCategories.map((category) => [category, Math.max(0, Math.min(categoryCapacity, Number(data.categories?.[category]?.remaining ?? categoryCapacity)))])
+        const availabilityByCategory = Object.fromEntries(
+          registrationCategories.map((category) => {
+            const registeredTeams = Math.max(0, Math.min(categoryCapacity, Number(data.categories?.[category]?.registeredTeams ?? 0)));
+            return [category, { registeredTeams, remaining: Math.max(0, categoryCapacity - registeredTeams) }];
+          })
         );
-        setCategoryAvailability(remainingByCategory);
+        setCategoryAvailability(availabilityByCategory);
         setFormValues((current) => {
-          if ((remainingByCategory[current.category] ?? categoryCapacity) > 0) return current;
-          const nextCategory = registrationCategories.find((category) => remainingByCategory[category] > 0);
+          if ((availabilityByCategory[current.category]?.remaining ?? categoryCapacity) > 0) return current;
+          const nextCategory = registrationCategories.find((category) => availabilityByCategory[category]?.remaining > 0);
           return nextCategory ? { ...current, category: nextCategory } : current;
         });
       })
@@ -701,11 +704,16 @@ export default function Home() {
                 <label htmlFor="category">PREFERRED CHALLENGE CATEGORY</label>
                 <select id="category" value={formValues.category} onChange={(event) => updateField("category", event.target.value as RegistrationInput["category"])} aria-invalid={Boolean(fieldErrors.category)} aria-describedby={fieldErrors.category ? "category-error" : undefined}>
                   {registrationCategories.map((category) => {
-                    const remaining = categoryAvailability?.[category] ?? categoryCapacity;
+                    const remaining = categoryAvailability?.[category]?.remaining ?? categoryCapacity;
                     const isFull = remaining === 0;
                     return <option key={category} value={category} disabled={isFull}>{category}</option>;
                   })}
                 </select>
+                {categoryAvailability && (
+                  <p className="category-availability" aria-live="polite">
+                    {registrationCategories.map((category) => <span key={category}>{category}: {categoryAvailability[category].registeredTeams} teams</span>)}
+                  </p>
+                )}
                 {fieldErrors.category && <span id="category-error" className="field-error">{fieldErrors.category}</span>}
               </div>
             </div>
