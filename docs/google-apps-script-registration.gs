@@ -7,6 +7,7 @@
 const REGISTRATION_SHEET_NAME = "Registrations";
 const HACKFINITY_CONFIRMATION_URL = "https://hackfinity-st-john-s.github.io/hackfinity/registration-confirmation.html";
 const CONFIRMATION_CACHE_SECONDS = 600;
+const CATEGORY_CAPACITY = 40;
 const REGISTRATION_HEADERS = [
   "Registration ID",
   "Submitted On",
@@ -51,12 +52,40 @@ const VALID_SKILLS = new Set([
 ]);
 
 function doGet(event) {
+  if (String(event?.parameter?.availability || "") === "1") {
+    return jsonResponse({ ok: true, capacity: CATEGORY_CAPACITY, categories: getCategoryAvailability() });
+  }
   const nonce = String(event?.parameter?.confirmationNonce || "");
   if (nonce) {
     const result = CacheService.getScriptCache().get(confirmationCacheKey(nonce));
     return jsonResponse(result ? JSON.parse(result) : { source: "hackfinity-registration", nonce, pending: true });
   }
   return jsonResponse({ ok: true, service: "Hackfinity registration receiver" });
+}
+
+function getCategoryAvailability() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(REGISTRATION_SHEET_NAME);
+  const registeredSchools = Object.fromEntries(Array.from(VALID_CATEGORIES, (category) => [category, new Set()]));
+  if (!sheet || sheet.getLastRow() < 2) {
+    return Object.fromEntries(Array.from(VALID_CATEGORIES, (category) => [category, { registeredSchools: 0, remaining: CATEGORY_CAPACITY }]));
+  }
+
+  const categoryColumn = REGISTRATION_HEADERS.indexOf("Challenge Category");
+  const schoolColumn = REGISTRATION_HEADERS.indexOf("School / Institution");
+  sheet.getRange(2, 1, sheet.getLastRow() - 1, REGISTRATION_HEADERS.length).getValues().forEach((row) => {
+    const category = String(row[categoryColumn] || "").trim();
+    const school = normalizeSchool(row[schoolColumn]);
+    if (Object.prototype.hasOwnProperty.call(registeredSchools, category) && school) registeredSchools[category].add(school);
+  });
+
+  return Object.fromEntries(Array.from(VALID_CATEGORIES, (category) => {
+    const count = registeredSchools[category].size;
+    return [category, { registeredSchools: count, remaining: Math.max(0, CATEGORY_CAPACITY - count) }];
+  }));
+}
+
+function normalizeSchool(value) {
+  return String(value || "").trim().replace(/\s+/g, " ").toLowerCase();
 }
 
 function doPost(event) {

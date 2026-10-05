@@ -72,6 +72,7 @@ const registrationEndpoint = "https://script.google.com/macros/s/AKfycbznM1_OyBo
 const registrationConfirmationFrameName = "hackfinity-registration-confirmation";
 const registrationResponseTimeoutMs = 30000;
 const registrationStatusPollIntervalMs = 700;
+const categoryCapacity = 40;
 const eventCountdownTarget = new Date("2026-10-31T00:00:00+05:30").getTime();
 
 function createTeamMember(): TeamMemberInput {
@@ -210,6 +211,7 @@ export default function Home() {
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<keyof RegistrationInput, string>>>({});
   const [submitState, setSubmitState] = useState<"idle" | "submitting" | "submitted" | "rejected" | "unavailable">("idle");
   const [honeypot, setHoneypot] = useState("");
+  const [categoryAvailability, setCategoryAvailability] = useState<Record<string, number> | null>(null);
 
   useEffect(() => {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -232,6 +234,32 @@ export default function Home() {
 
     sections.forEach((section) => observer.observe(section));
     return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    let active = true;
+
+    fetch(`${registrationEndpoint}?availability=1`, { cache: "no-store" })
+      .then((response) => response.ok ? response.json() : Promise.reject(new Error("Availability is unavailable.")))
+      .then((data: { categories?: Record<string, { remaining?: number }> }) => {
+        if (!active || !data.categories) return;
+        const remainingByCategory = Object.fromEntries(
+          registrationCategories.map((category) => [category, Math.max(0, Math.min(categoryCapacity, Number(data.categories?.[category]?.remaining ?? categoryCapacity)))])
+        );
+        setCategoryAvailability(remainingByCategory);
+        setFormValues((current) => {
+          if ((remainingByCategory[current.category] ?? categoryCapacity) > 0) return current;
+          const nextCategory = registrationCategories.find((category) => remainingByCategory[category] > 0);
+          return nextCategory ? { ...current, category: nextCategory } : current;
+        });
+      })
+      .catch(() => {
+        // Keep the selector usable if the organizer’s status endpoint is temporarily unavailable.
+      });
+
+    return () => {
+      active = false;
+    };
   }, []);
 
   const closeMenu = () => setMenuOpen(false);
@@ -443,7 +471,7 @@ export default function Home() {
 
           <div className="hero-brief-card" aria-label="Hackfinity 2026 challenge summary">
             <span>2026 FIELD BRIEF</span>
-            <strong>30 DAYS · 4 CHALLENGES</strong>
+            <strong>4 CHALLENGES</strong>
             <p>Building safer communities.</p>
           </div>
 
@@ -473,7 +501,7 @@ export default function Home() {
             </div>
             <div className="story-copy">
               <p>Hackfinity is St. John&apos;s School&apos;s flagship student innovation platform designed to inspire young minds to solve real-world challenges through research, technology, creativity, and entrepreneurship.</p>
-              <p>Following the success of the inaugural edition, Hackfinity 2026 returns with a powerful social mission through TOOFAN – The Narco Hunt, a 30-day innovation challenge dedicated to developing solutions that help combat substance abuse and build safer communities.</p>
+              <p>Following the success of the inaugural edition, Hackfinity 2026 returns with a powerful social mission through TOOFAN – The Narco Hunt, an innovation challenge dedicated to developing solutions that help combat substance abuse and build safer communities.</p>
               <a className="text-link" href="#toofan-mission">Discover the mission <ArrowUpRight aria-hidden="true" /></a>
             </div>
           </div>
@@ -672,7 +700,11 @@ export default function Home() {
               <div className="form-field form-field-wide">
                 <label htmlFor="category">PREFERRED CHALLENGE CATEGORY</label>
                 <select id="category" value={formValues.category} onChange={(event) => updateField("category", event.target.value as RegistrationInput["category"])} aria-invalid={Boolean(fieldErrors.category)} aria-describedby={fieldErrors.category ? "category-error" : undefined}>
-                  {registrationCategories.map((category) => <option key={category} value={category}>{category}</option>)}
+                  {registrationCategories.map((category) => {
+                    const remaining = categoryAvailability?.[category] ?? categoryCapacity;
+                    const isFull = remaining === 0;
+                    return <option key={category} value={category} disabled={isFull}>{category} — {isFull ? "FULL / UNAVAILABLE" : `${remaining} school slots remaining`}</option>;
+                  })}
                 </select>
                 {fieldErrors.category && <span id="category-error" className="field-error">{fieldErrors.category}</span>}
               </div>
@@ -721,8 +753,8 @@ export default function Home() {
             </fieldset>
 
             <div className="form-field form-field-message">
-              <label htmlFor="projectInterest">WHAT PROBLEM OR IDEA DO YOU WANT TO EXPLORE? <span>OPTIONAL</span></label>
-              <textarea id="projectInterest" value={formValues.projectInterest} onChange={(event) => updateField("projectInterest", event.target.value)} placeholder="A short note helps the organisers understand your interests." maxLength={500} aria-invalid={Boolean(fieldErrors.projectInterest)} aria-describedby={fieldErrors.projectInterest ? "project-error" : undefined} />
+              <label htmlFor="projectInterest">BRIEF DESCRIPTION OF YOUR PROJECT OR INTEREST <span>OPTIONAL</span></label>
+              <textarea id="projectInterest" value={formValues.projectInterest} onChange={(event) => updateField("projectInterest", event.target.value)} placeholder="Briefly describe your project idea or area of interest." maxLength={500} aria-invalid={Boolean(fieldErrors.projectInterest)} aria-describedby={fieldErrors.projectInterest ? "project-error" : undefined} />
               {fieldErrors.projectInterest && <span id="project-error" className="field-error">{fieldErrors.projectInterest}</span>}
             </div>
 
@@ -752,6 +784,8 @@ export default function Home() {
     <strong>ST. JOHN&apos;S SCHOOL, ANCHAL</strong>
   </div>
   <div className="footer-brand">
+    <span className="footer-powered-label">POWERED BY</span>
+    <span className="footer-powered-name">HOWNWHY</span>
     <img
       src="./assets/hownwhy-logo.png"
       alt="Powered by HOW N WHY"

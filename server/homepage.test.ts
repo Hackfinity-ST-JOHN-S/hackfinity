@@ -12,7 +12,8 @@ describe("TOOFAN homepage", () => {
     expect(page).not.toContain("TOOFAN THEME");
     expect(page).toContain("ABOUT HACKFINITY 2026");
     expect(page).toContain("TOOFAN – The Narco Hunt");
-    expect(page).toContain("30-day innovation challenge");
+    expect(page).toContain("an innovation challenge");
+    expect(page).not.toContain("30-day");
     expect(page).toContain("more than 60 schools across South India");
     expect(page).toContain("₹10,000 each");
     expect(page).toContain("Artificial Intelligence");
@@ -45,7 +46,9 @@ describe("TOOFAN homepage", () => {
     expect(page).toContain('/assets/st-johns-school-official-crest.jpg');
     expect(page).toContain('nav-toofan-logo');
     expect(page).toContain('/assets/toofan-the-narco-hunt-logo.png');
-    expect(page).toContain("30 DAYS · 4 CHALLENGES");
+    expect(page).toContain("4 CHALLENGES");
+    expect(page).toContain("40 school slots remaining");
+    expect(page).toContain("BRIEF DESCRIPTION OF YOUR PROJECT OR INTEREST");
     expect(page).toContain("COUNTDOWN TO EVENT DAY");
     expect(page).toContain("REGISTRATION SYSTEM: LIVE");
     expect(page).toContain("are sent to the organiser&#x27;s registration sheet.");
