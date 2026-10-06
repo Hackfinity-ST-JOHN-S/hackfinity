@@ -265,10 +265,6 @@ export default function Home() {
     return () => window.clearInterval(interval);
   }, [refreshAvailability]);
 
-  const totalRegisteredTeams = categoryAvailability
-    ? Object.values(categoryAvailability).reduce((total, category) => total + category.registeredTeams, 0)
-    : null;
-
   const closeMenu = () => setMenuOpen(false);
 
   const handleFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -482,7 +478,7 @@ export default function Home() {
           <div className="hero-brief-card" aria-label="Hackfinity 2026 challenge summary">
             <span>2026 FIELD BRIEF</span>
             <strong>4 CHALLENGES</strong>
-            <p className="live-registration-count" aria-live="polite"><span className="live-registration-dot" aria-hidden="true" />LIVE REGISTRATIONS: {totalRegisteredTeams ?? "—"}</p>
+            <p>Building safer communities.</p>
           </div>
 
           <div className="hero-meta-panel">
