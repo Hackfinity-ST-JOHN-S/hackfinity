@@ -37,5 +37,7 @@ describe("Official Google Sheets registration script", () => {
 
     expect(script).toContain("if (!hasExpectedHeaders)");
     expect(script).toContain("cacheConfirmation(payload, true);");
+    expect(script).toContain("authorizeHackfinityEmail");
+    expect(script).toContain("MailApp.sendEmail");
   });
 });

@@ -34,6 +34,11 @@ const REGISTRATION_HEADERS = [
 const REVIEW_STATUSES = ["New", "Under Review", "Shortlisted", "Contacted", "Complete"];
 const REGISTRATION_COLUMN_WIDTHS = [150, 160, 190, 220, 145, 115, 220, 145, 190, 155, 175, 105, 145, 200, 230, 280, 125, 320, 135, 240];
 
+// Run this once from the Sheet owner's Apps Script account to authorize confirmation emails.
+function authorizeHackfinityEmail() {
+  return MailApp.getRemainingDailyQuota();
+}
+
 const VALID_CATEGORIES = new Set([
   "Awareness Challenge",
   "Prevention Challenge",
