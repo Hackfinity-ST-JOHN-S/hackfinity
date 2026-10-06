@@ -38,8 +38,8 @@ describe("TOOFAN homepage", () => {
     const page = renderToStaticMarkup(createElement(Home));
 
     expect(page).toContain("OFFICIAL HOST");
-    expect(page).toContain("POWERED BY");
-    expect(page).toContain("HOWNWHY");
+    expect(page).toContain('hownwhy-logo.png');
+    expect(page).not.toContain('footer-powered-label');
     expect(page).toContain('/assets/st-johns-school.jpg');
     expect(page).toContain('school-host-mark');
     expect(page).toContain('school-host-crest');

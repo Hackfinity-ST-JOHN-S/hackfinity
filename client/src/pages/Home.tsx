@@ -1,4 +1,4 @@
-import React, { type FormEvent, useEffect, useState } from "react";
+import React, { type FormEvent, useCallback, useEffect, useState } from "react";
 import {
   ArrowDown,
   ArrowUpRight,
@@ -236,34 +236,34 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    let active = true;
+  const refreshAvailability = useCallback(async () => {
+    const response = await fetch(`${registrationEndpoint}?availability=1&ts=${Date.now()}`, { cache: "no-store" });
+    if (!response.ok) throw new Error("Availability is unavailable.");
+    const data: { categories?: Record<string, { registeredTeams?: number; remaining?: number }> } = await response.json();
+    if (!data.categories) return;
 
-    fetch(`${registrationEndpoint}?availability=1`, { cache: "no-store" })
-      .then((response) => response.ok ? response.json() : Promise.reject(new Error("Availability is unavailable.")))
-      .then((data: { categories?: Record<string, { registeredTeams?: number; remaining?: number }> }) => {
-        if (!active || !data.categories) return;
-        const availabilityByCategory = Object.fromEntries(
-          registrationCategories.map((category) => {
-            const registeredTeams = Math.max(0, Math.min(categoryCapacity, Number(data.categories?.[category]?.registeredTeams ?? 0)));
-            return [category, { registeredTeams, remaining: Math.max(0, categoryCapacity - registeredTeams) }];
-          })
-        );
-        setCategoryAvailability(availabilityByCategory);
-        setFormValues((current) => {
-          if ((availabilityByCategory[current.category]?.remaining ?? categoryCapacity) > 0) return current;
-          const nextCategory = registrationCategories.find((category) => availabilityByCategory[category]?.remaining > 0);
-          return nextCategory ? { ...current, category: nextCategory } : current;
-        });
+    const availabilityByCategory = Object.fromEntries(
+      registrationCategories.map((category) => {
+        const registeredTeams = Math.max(0, Math.min(categoryCapacity, Number(data.categories?.[category]?.registeredTeams ?? 0)));
+        return [category, { registeredTeams, remaining: Math.max(0, categoryCapacity - registeredTeams) }];
       })
-      .catch(() => {
-        // Keep the selector usable if the organizer’s status endpoint is temporarily unavailable.
-      });
-
-    return () => {
-      active = false;
-    };
+    );
+    setCategoryAvailability(availabilityByCategory);
+    setFormValues((current) => {
+      if ((availabilityByCategory[current.category]?.remaining ?? categoryCapacity) > 0) return current;
+      const nextCategory = registrationCategories.find((category) => availabilityByCategory[category]?.remaining > 0);
+      return nextCategory ? { ...current, category: nextCategory } : current;
+    });
   }, []);
+
+  useEffect(() => {
+    const loadAvailability = () => refreshAvailability().catch(() => {
+      // Keep the selector usable if the organizer’s status endpoint is temporarily unavailable.
+    });
+    loadAvailability();
+    const interval = window.setInterval(loadAvailability, 15000);
+    return () => window.clearInterval(interval);
+  }, [refreshAvailability]);
 
   const totalRegisteredTeams = categoryAvailability
     ? Object.values(categoryAvailability).reduce((total, category) => total + category.registeredTeams, 0)
@@ -338,6 +338,9 @@ export default function Home() {
         setFormValues(registrationDefaults);
         setHoneypot("");
         setSubmitState("submitted");
+        refreshAvailability().catch(() => {
+          // The next scheduled refresh will retry if the status endpoint is briefly unavailable.
+        });
       } else {
         setSubmitState("rejected");
       }
@@ -790,9 +793,7 @@ export default function Home() {
     <span>HOSTED BY</span>
     <strong>ST. JOHN&apos;S SCHOOL, ANCHAL</strong>
   </div>
-  <div className="footer-brand">
-    <span className="footer-powered-label">POWERED BY</span>
-    <span className="footer-powered-name">HOWNWHY</span>
+  <div className="footer-brand" aria-label="Powered by HOW N WHY">
     <img
       src="./assets/hownwhy-logo.png"
       alt="Powered by HOW N WHY"
