@@ -43,7 +43,7 @@ describe("TOOFAN homepage", () => {
     expect(page).toContain('/assets/st-johns-school.jpg');
     expect(page).toContain('school-host-mark');
     expect(page).toContain('school-host-crest');
-    expect(page).toContain('/assets/st-johns-school-emblem.jpg');
+    expect(page).toContain('/assets/st-johns-school-emblem-centered.jpg');
     expect(page).toContain('nav-toofan-logo');
     expect(page).toContain('/assets/toofan-the-narco-hunt-logo.png');
     expect(page).toContain("4 CHALLENGES");

@@ -121,6 +121,11 @@ function doPost(event) {
         "New",
         "",
       ]);
+      try {
+        sendRegistrationConfirmationEmail(registration);
+      } catch (emailError) {
+        console.warn(`Registration saved, but confirmation email could not be sent: ${emailError}`);
+      }
       cacheConfirmation(payload, true);
     } finally {
       lock.releaseLock();
@@ -251,6 +256,21 @@ function validateTeamMember(member, index) {
 function formatTeamMembers(teamMembers) {
   if (!teamMembers.length) return "Individual registration";
   return teamMembers.map((member, index) => `Member ${index + 2}: ${member.name}\nClass / Grade: ${member.grade}\nContact: ${member.phone}\nEmail: ${member.email}`).join("\n\n");
+}
+
+function sendRegistrationConfirmationEmail(registration) {
+  const memberNames = [registration.name].concat(registration.teamMembers.map((member) => member.name));
+  const teamLine = registration.team ? `Team name: ${registration.team}\n` : "";
+  const subject = "Hackfinity 2026 registration confirmation";
+  const body = `Dear ${registration.name},\n\nThank you for showing interest in and registering for Hackfinity 2026.\n\n${teamLine}Confirmed member names:\n${memberNames.map((name) => `- ${name}`).join("\n")}\n\nThe organising team will contact you soon.\n\nRegards,\nHackfinity 2026 Organising Team`;
+  const htmlMemberNames = memberNames.map((name) => `<li>${escapeEmailHtml(name)}</li>`).join("");
+  const htmlTeamLine = registration.team ? `<p><strong>Team name:</strong> ${escapeEmailHtml(registration.team)}</p>` : "";
+  const htmlBody = `<p>Dear ${escapeEmailHtml(registration.name)},</p><p>Thank you for showing interest in and registering for Hackfinity 2026.</p>${htmlTeamLine}<p><strong>Confirmed member names:</strong></p><ul>${htmlMemberNames}</ul><p>The organising team will contact you soon.</p><p>Regards,<br>Hackfinity 2026 Organising Team</p>`;
+  MailApp.sendEmail({ to: registration.email, subject, body, htmlBody });
+}
+
+function escapeEmailHtml(value) {
+  return String(value || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;");
 }
 
 function text(value, minimum, maximum, field) {

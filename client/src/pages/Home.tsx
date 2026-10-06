@@ -28,7 +28,7 @@ const eventDetails = {
   venue: "ST. JOHN'S SCHOOL, ANCHAL",
 };
 
-const officialHeaderCrestUrl = `${import.meta.env.BASE_URL}assets/st-johns-school-emblem.jpg`;
+const officialHeaderCrestUrl = `${import.meta.env.BASE_URL}assets/st-johns-school-emblem-centered.jpg`;
 const toofanNavigationLogoUrl = `${import.meta.env.BASE_URL}assets/toofan-the-narco-hunt-logo.png`;
 
 const navItems = [
