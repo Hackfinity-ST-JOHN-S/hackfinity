@@ -68,7 +68,7 @@ const impactCards = [
 
 const focusAreas = ["Artificial Intelligence", "Robotics", "Engineering", "Biotechnology", "Design Thinking", "Digital Technologies", "Entrepreneurship"];
 const stJohnsLogoUrl = `${import.meta.env.BASE_URL}assets/st-johns-school.jpg`;
-const registrationEndpoint = "https://script.google.com/macros/s/AKfycbyMCVyLRXQHtJz_5EhDeGWn44NHKKrHGJshD6yRRGXF5DzaMN_N1q5mGhx4QDj5tolx/exec";
+const registrationEndpoint = "https://script.google.com/macros/s/AKfycbyiqwZbkrln4nQYYYDBib9R_mfBvGew-FutyZ2as9UesgXhoMi822TYOgEFbtiHvmod/exec";
 const registrationConfirmationFrameName = "hackfinity-registration-confirmation";
 const registrationResponseTimeoutMs = 30000;
 const registrationStatusPollIntervalMs = 700;
