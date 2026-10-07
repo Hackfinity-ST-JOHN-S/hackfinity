@@ -662,7 +662,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="form-section-heading"><span>02</span> SCHOOL &amp; SAFETY CONTACT</div>
+            <div className="form-section-heading"><span>02</span> SCHOOL &amp; MENTOR CONTACT</div>
             <div className="form-grid">
               <div className="form-field form-field-wide">
                 <label htmlFor="school">SCHOOL NAME</label>
@@ -675,12 +675,12 @@ export default function Home() {
                 {fieldErrors.district && <span id="district-error" className="field-error">{fieldErrors.district}</span>}
               </div>
               <div className="form-field">
-                <label htmlFor="guardianName">PARENT / GUARDIAN NAME</label>
+                <label htmlFor="guardianName">PARENT / MENTOR NAME</label>
                 <input id="guardianName" value={formValues.guardianName} onChange={(event) => updateField("guardianName", event.target.value)} placeholder="For event communication" aria-invalid={Boolean(fieldErrors.guardianName)} aria-describedby={fieldErrors.guardianName ? "guardian-name-error" : undefined} />
                 {fieldErrors.guardianName && <span id="guardian-name-error" className="field-error">{fieldErrors.guardianName}</span>}
               </div>
               <div className="form-field">
-                <label htmlFor="guardianPhone">PARENT / GUARDIAN CONTACT</label>
+                <label htmlFor="guardianPhone">PARENT / MENTOR CONTACT</label>
                 <input id="guardianPhone" type="tel" value={formValues.guardianPhone} onChange={(event) => updateField("guardianPhone", event.target.value)} placeholder="A reachable contact number" autoComplete="tel" aria-invalid={Boolean(fieldErrors.guardianPhone)} aria-describedby={fieldErrors.guardianPhone ? "guardian-phone-error" : undefined} />
                 {fieldErrors.guardianPhone && <span id="guardian-phone-error" className="field-error">{fieldErrors.guardianPhone}</span>}
               </div>
