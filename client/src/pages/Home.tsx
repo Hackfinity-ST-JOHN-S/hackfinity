@@ -72,6 +72,7 @@ const registrationEndpoint = "https://script.google.com/macros/s/AKfycbznM1_OyBo
 const registrationConfirmationFrameName = "hackfinity-registration-confirmation";
 const registrationResponseTimeoutMs = 30000;
 const registrationStatusPollIntervalMs = 700;
+const gradeOptions = Array.from({ length: 7 }, (_, index) => `Grade ${index + 6}`);
 const categoryCapacity = 10;
 const eventCountdownTarget = new Date("2026-10-31T00:00:00+05:30").getTime();
 
@@ -653,7 +654,10 @@ export default function Home() {
               </div>
               <div className="form-field">
                 <label htmlFor="grade">CLASS / GRADE</label>
-                <input id="grade" value={formValues.grade} onChange={(event) => updateField("grade", event.target.value)} placeholder="For example, Class XI" aria-invalid={Boolean(fieldErrors.grade)} aria-describedby={fieldErrors.grade ? "grade-error" : undefined} />
+                <select id="grade" value={formValues.grade} onChange={(event) => updateField("grade", event.target.value)} aria-invalid={Boolean(fieldErrors.grade)} aria-describedby={fieldErrors.grade ? "grade-error" : undefined}>
+                  <option value="" disabled>Select your grade</option>
+                  {gradeOptions.map((grade) => <option key={grade} value={grade}>{grade}</option>)}
+                </select>
                 {fieldErrors.grade && <span id="grade-error" className="field-error">{fieldErrors.grade}</span>}
               </div>
             </div>
@@ -692,7 +696,7 @@ export default function Home() {
               <div className="form-field">
                 <label htmlFor="teamSize">TEAM SIZE</label>
                 <select id="teamSize" value={formValues.teamSize} onChange={(event) => updateTeamSize(event.target.value as RegistrationInput["teamSize"])} aria-invalid={Boolean(fieldErrors.teamSize)} aria-describedby={fieldErrors.teamSize ? "team-size-error" : undefined}>
-                  {["1", "2", "3", "4", "5", "6"].map((size) => <option key={size} value={size}>{size} participant{size === "1" ? "" : "s"}</option>)}
+                  {["1", "2", "3", "4"].map((size) => <option key={size} value={size}>{size} participant{size === "1" ? "" : "s"}</option>)}
                 </select>
                 {fieldErrors.teamSize && <span id="team-size-error" className="field-error">{fieldErrors.teamSize}</span>}
               </div>
@@ -731,7 +735,10 @@ export default function Home() {
                         </div>
                         <div className="form-field">
                           <label htmlFor={`member-${index}-grade`}>CLASS / GRADE</label>
-                          <input id={`member-${index}-grade`} value={member.grade} onChange={(event) => updateTeamMember(index, "grade", event.target.value)} placeholder="For example, Class XI" aria-invalid={Boolean(fieldErrors.teamMembers)} />
+                          <select id={`member-${index}-grade`} value={member.grade} onChange={(event) => updateTeamMember(index, "grade", event.target.value)} aria-invalid={Boolean(fieldErrors.teamMembers)}>
+                            <option value="" disabled>Select grade</option>
+                            {gradeOptions.map((grade) => <option key={grade} value={grade}>{grade}</option>)}
+                          </select>
                         </div>
                         <div className="form-field">
                           <label htmlFor={`member-${index}-phone`}>STUDENT CONTACT</label>
