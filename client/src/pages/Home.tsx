@@ -74,14 +74,33 @@ const registrationResponseTimeoutMs = 30000;
 const registrationStatusPollIntervalMs = 700;
 const gradeOptions = Array.from({ length: 7 }, (_, index) => `Grade ${index + 6}`);
 const categoryCapacity = 10;
-const postponedCountdown = { days: 30, hours: 0, minutes: 0, seconds: 0 };
+const postponedCountdownDurationMs = 30 * 86_400_000;
 
 function createTeamMember(): TeamMemberInput {
   return { name: "", grade: "", phone: "", email: "" };
 }
 
+function getCountdownParts(elapsedMs: number) {
+  let remaining = Math.max(0, postponedCountdownDurationMs - elapsedMs);
+  const days = Math.floor(remaining / 86_400_000);
+  remaining -= days * 86_400_000;
+  const hours = Math.floor(remaining / 3_600_000);
+  remaining -= hours * 3_600_000;
+  const minutes = Math.floor(remaining / 60_000);
+  remaining -= minutes * 60_000;
+  const seconds = Math.floor(remaining / 1_000);
+  return { days, hours, minutes, seconds };
+}
+
 function EventCountdown() {
-  const countdown = postponedCountdown;
+  const [elapsedMs, setElapsedMs] = useState(0);
+  const countdown = getCountdownParts(elapsedMs);
+
+  useEffect(() => {
+    const startedAt = Date.now();
+    const interval = window.setInterval(() => setElapsedMs(Date.now() - startedAt), 1_000);
+    return () => window.clearInterval(interval);
+  }, []);
 
   const countdownUnits = [
     { label: "Days", value: countdown.days },
