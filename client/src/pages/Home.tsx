@@ -24,7 +24,7 @@ import { matchRegistrationConfirmation } from "@shared/registrationConfirmation"
 import { getRegistrationSubmissionState } from "@shared/registrationSubmission";
 
 const eventDetails = {
-  date: "31 OCT 2026",
+  date: "YET TO BE DECLARED",
   venue: "ST. JOHN'S SCHOOL, ANCHAL",
 };
 
@@ -74,14 +74,14 @@ const registrationResponseTimeoutMs = 30000;
 const registrationStatusPollIntervalMs = 700;
 const gradeOptions = Array.from({ length: 7 }, (_, index) => `Grade ${index + 6}`);
 const categoryCapacity = 10;
-const eventCountdownTarget = new Date("2026-10-31T00:00:00+05:30").getTime();
+const eventCountdownDurationMs = 30 * 86_400_000;
 
 function createTeamMember(): TeamMemberInput {
   return { name: "", grade: "", phone: "", email: "" };
 }
 
-function getCountdownParts(now: number) {
-  let remaining = Math.max(0, eventCountdownTarget - now);
+function getCountdownParts(elapsedMs: number) {
+  let remaining = Math.max(0, eventCountdownDurationMs - elapsedMs);
   const days = Math.floor(remaining / 86_400_000);
   remaining -= days * 86_400_000;
   const hours = Math.floor(remaining / 3_600_000);
@@ -93,11 +93,12 @@ function getCountdownParts(now: number) {
 }
 
 function EventCountdown() {
-  const [now, setNow] = useState(() => Date.now());
-  const countdown = getCountdownParts(now);
+  const [elapsedMs, setElapsedMs] = useState(0);
+  const countdown = getCountdownParts(elapsedMs);
 
   useEffect(() => {
-    const interval = window.setInterval(() => setNow(Date.now()), 1_000);
+    const startedAt = Date.now();
+    const interval = window.setInterval(() => setElapsedMs(Date.now() - startedAt), 1_000);
     return () => window.clearInterval(interval);
   }, []);
 
@@ -109,7 +110,7 @@ function EventCountdown() {
   ];
 
   return (
-    <div className="event-countdown" role="timer" aria-live="off" aria-label={`Countdown to 31 October 2026: ${countdown.days} days, ${countdown.hours} hours, ${countdown.minutes} minutes, and ${countdown.seconds} seconds remaining`}>
+    <div className="event-countdown" role="timer" aria-live="off" aria-label={`Countdown: ${countdown.days} days, ${countdown.hours} hours, ${countdown.minutes} minutes, and ${countdown.seconds} seconds remaining`}>
       <span className="event-countdown-label">COUNTDOWN TO EVENT DAY</span>
       <div className="event-countdown-units">
         {countdownUnits.map((unit) => (

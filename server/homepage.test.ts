@@ -17,7 +17,9 @@ describe("TOOFAN homepage", () => {
     expect(page).toContain("more than 60 schools across South India");
     expect(page).toContain("₹10,000 each");
     expect(page).toContain("Artificial Intelligence");
-    expect(page).toContain("31 OCT 2026");
+    expect(page).toContain("YET TO BE DECLARED");
+    expect(page).not.toContain("31 OCT 2026");
+    expect(page).not.toContain("31 October 2026");
     expect(page).toContain("ST. JOHN&#x27;S SCHOOL, ANCHAL");
     expect(page).toContain("The Storm");
     expect(page).toContain("Experience");
@@ -51,10 +53,11 @@ describe("TOOFAN homepage", () => {
     expect(page).not.toContain("school slots remaining");
     expect(page).toContain("BRIEF DESCRIPTION OF YOUR PROJECT OR INTEREST");
     expect(page).toContain("COUNTDOWN TO EVENT DAY");
+    expect(page).toContain(">030</strong><small>Days");
     expect(page).toContain("REGISTRATION SYSTEM: LIVE");
     expect(page).toContain("are sent to the organiser&#x27;s registration sheet.");
     expect(page).toContain("Submit my application");
-    expect(page).toContain("PARENT / GUARDIAN CONTACT");
+    expect(page).toContain("PARENT / MENTOR CONTACT");
     expect(page).toContain("PREFERRED CHALLENGE CATEGORY");
     expect(page).toContain("AREAS YOU WANT TO EXPLORE");
     expect(page).toContain("TEAM SIZE");
