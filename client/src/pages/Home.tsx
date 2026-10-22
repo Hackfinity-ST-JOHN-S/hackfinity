@@ -24,7 +24,7 @@ import { matchRegistrationConfirmation } from "@shared/registrationConfirmation"
 import { getRegistrationSubmissionState } from "@shared/registrationSubmission";
 
 const eventDetails = {
-  date: "YET TO BE DECLARED",
+  date: "28 NOV 2026",
   venue: "ST. JOHN'S SCHOOL, ANCHAL",
 };
 
@@ -74,14 +74,14 @@ const registrationResponseTimeoutMs = 30000;
 const registrationStatusPollIntervalMs = 700;
 const gradeOptions = Array.from({ length: 7 }, (_, index) => `Grade ${index + 6}`);
 const categoryCapacity = 10;
-const postponedCountdownDurationMs = 30 * 86_400_000;
+const eventTimestamp = new Date("2026-11-28T00:00:00+05:30").getTime();
 
 function createTeamMember(): TeamMemberInput {
   return { name: "", grade: "", phone: "", email: "" };
 }
 
-function getCountdownParts(elapsedMs: number) {
-  let remaining = Math.max(0, postponedCountdownDurationMs - elapsedMs);
+function getCountdownParts(now: number) {
+  let remaining = Math.max(0, eventTimestamp - now);
   const days = Math.floor(remaining / 86_400_000);
   remaining -= days * 86_400_000;
   const hours = Math.floor(remaining / 3_600_000);
@@ -93,12 +93,12 @@ function getCountdownParts(elapsedMs: number) {
 }
 
 function EventCountdown() {
-  const [elapsedMs, setElapsedMs] = useState(0);
-  const countdown = getCountdownParts(elapsedMs);
+  const [countdown, setCountdown] = useState(() => getCountdownParts(Date.now()));
 
   useEffect(() => {
-    const startedAt = Date.now();
-    const interval = window.setInterval(() => setElapsedMs(Date.now() - startedAt), 1_000);
+    const updateCountdown = () => setCountdown(getCountdownParts(Date.now()));
+    updateCountdown();
+    const interval = window.setInterval(updateCountdown, 1_000);
     return () => window.clearInterval(interval);
   }, []);
 
